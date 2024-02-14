@@ -1,0 +1,586 @@
+[gd_scene load_steps=35 format=3 uid="uid://dfb784on0a1y1"]
+
+[ext_resource type="Shader" path="res://Shaders/WorldspacePosition.gdshader" id="1_t8g2u"]
+[ext_resource type="Shader" path="res://Shaders/CamWorldspaceShader.gdshader" id="2_wqljv"]
+[ext_resource type="ArrayMesh" uid="uid://bnmqt7c20ps3p" path="res://HP_Crab.OBJ" id="3_kk2ox"]
+[ext_resource type="Script" path="res://Scripts/TankMovement.cs" id="4_7e5wn"]
+[ext_resource type="Script" path="res://Scripts/CameraPivot.cs" id="5_01sxo"]
+[ext_resource type="Script" path="res://Scripts/Scanner.cs" id="6_wm6oe"]
+[ext_resource type="Script" path="res://Scripts/Scanner2D.cs" id="7_0487h"]
+[ext_resource type="Shader" path="res://Shaders/ParticleDotRenderer.gdshader" id="8_mhrpa"]
+[ext_resource type="Texture2D" uid="uid://orwxx12d8r5n" path="res://Circle.png" id="9_xe8kc"]
+[ext_resource type="Script" path="res://Scripts/CylinderCameraScanner.cs" id="10_n38s6"]
+[ext_resource type="Script" path="res://Scripts/CamVisualizer.cs" id="11_w6n58"]
+[ext_resource type="Script" path="res://Scripts/InfoReadout.cs" id="12_3chtk"]
+[ext_resource type="Script" path="res://src/camera360/camera360.gd" id="12_42iud"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ceslt"]
+render_priority = 0
+shader = ExtResource("1_t8g2u")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_s7pnd"]
+size = Vector2(200, 200)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ry3is"]
+size = Vector3(200, 0.503, 200)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fuaew"]
+render_priority = 0
+shader = ExtResource("1_t8g2u")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_2xnth"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_uprei"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2r825"]
+render_priority = 0
+shader = ExtResource("2_wqljv")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_60wof"]
+radius = 0.300184
+height = 0.980444
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0nqgx"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.121569)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_r7blq"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_16ya1"]
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_mspf4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oxq3v"]
+shader = ExtResource("8_mhrpa")
+shader_parameter/color0 = Color(1, 0.894118, 0.807843, 1)
+shader_parameter/color1 = Color(1, 0.870588, 0.427451, 1)
+shader_parameter/color2 = Color(1, 0, 0, 1)
+shader_parameter/color3 = Color(0.356863, 0, 0.545098, 1)
+shader_parameter/vertResolution = null
+shader_parameter/colorTest = Vector4(1, 0, 0, 1)
+shader_parameter/points = null
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iqyi5"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+blend_mode = 1
+no_depth_test = true
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("9_xe8kc")
+billboard_mode = 1
+billboard_keep_scale = true
+use_point_size = true
+
+[sub_resource type="PointMesh" id="PointMesh_6pvub"]
+material = SubResource("StandardMaterial3D_iqyi5")
+custom_aabb = AABB(-10, -10, -10, 20, 20, 20)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7o6la"]
+
+[sub_resource type="Sky" id="Sky_lu7yt"]
+sky_material = SubResource("ProceduralSkyMaterial_7o6la")
+
+[sub_resource type="Environment" id="Environment_qy05w"]
+background_mode = 1
+background_energy_multiplier = 0.12
+sky = SubResource("Sky_lu7yt")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.2
+fog_light_energy = 1.69
+fog_sun_scatter = 0.44
+fog_density = 0.0
+fog_sky_affect = 0.464
+fog_height = 252.29
+fog_height_density = -2.087
+
+[sub_resource type="LabelSettings" id="LabelSettings_siuir"]
+font_size = 22
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b1gwv"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vqwil"]
+size = Vector2(36, 25)
+
+[node name="Node" type="Node"]
+
+[node name="Terrain" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(15.7598, 0, 0, 0, 15.7514, 0.515371, 0, -0.515371, 15.7514, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_ceslt")
+mesh = SubResource("PlaneMesh_s7pnd")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Ground/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00274658, -0.248718, 6.10321e-05)
+shape = SubResource("BoxShape3D_ry3is")
+
+[node name="Hills" type="Node" parent="Terrain"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.74419, 0.532195, -8.38742)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D2/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.1383, 0.532195, -5.25176)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D3/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5368, 0.565467, 8.38852)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D4/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.39048, 0.607073, 6.17969)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D5"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D5/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.96856, -0.339871, 6.17969)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D6"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D6/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.76114, 0.613682, 5.1997)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D7"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D7/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.66438, 0.664863, 4.68519)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D8"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D8/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.83821, 0.664863, 1.84512)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D9"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D9/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.13318, 0.664863, 3.55822)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D10"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D10/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.97907, 0.664863, 0.351402)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+surface_material_override/0 = SubResource("ShaderMaterial_2r825")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D11"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D11/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01294, -0.0569391, 4.96341)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D12"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D12/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, -0.489635, 0.660216, -3.82332)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D13"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D13/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, -2.35179, -0.579906, -3.82332)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D14"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D14/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, -1.31382, 0.668871, -5.10672)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D15"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D15/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, 5.10747, 0.735898, -5.78052)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D16"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D16/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, 4.02553, 0.735898, -9.49988)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D17"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D17/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D18" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, 4.41181, 0.735898, -7.25641)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D18"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D18/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D19" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, -3.79151, 0.735898, -7.25641)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D19"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D19/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D20" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(1.3096, 0, 0, 0, 1.3096, 0, 0, 0, 1.3096, -6.25637, -0.209377, -5.41616)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D20"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D20/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D21" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(0.823609, 0, -1.0182, 0, 1.3096, 0, 1.0182, 0, 0.823609, -9.81542, 0.660216, 4.21872)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D21"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D21/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D22" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(0.823609, 0, -1.0182, 0, 1.3096, 0, 1.0182, 0, 0.823609, -10.9865, -0.579906, 2.77092)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D22"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D22/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D23" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(-0.00463866, -0.0088566, -0.000208558, -0.000207335, -0.000126822, 0.00999705, -0.00885663, 0.00464161, -0.000124801, -7.95447, 0.578165, 1.66279)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = ExtResource("3_kk2ox")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D23"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D23/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D24" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(0.823609, 0, -1.0182, 0, 1.3096, 0, 1.0182, 0, 0.823609, -4.7737, 0.735898, 7.33951)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D24"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D24/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D25" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(0.823609, 0, -1.0182, 0, 1.3096, 0, 1.0182, 0, 0.823609, -2.56238, 0.735898, 4.1592)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D25"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D25/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D26" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(0.823609, 0, -1.0182, 0, 1.3096, 0, 1.0182, 0, 0.823609, -4.06372, 0.735898, 5.87046)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D26"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D26/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D27" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(0.823609, 0, -1.0182, 0, 1.3096, 0, 1.0182, 0, 0.823609, -9.22279, 0.735898, -0.507516)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D27"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D27/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="MeshInstance3D28" type="MeshInstance3D" parent="Terrain/Hills"]
+transform = Transform3D(0.823609, 0, -1.0182, 0, 1.3096, 0, 1.0182, 0, 0.823609, -12.2037, -0.209377, -1.26658)
+material_override = SubResource("ShaderMaterial_fuaew")
+cast_shadow = 2
+gi_mode = 0
+mesh = SubResource("CapsuleMesh_2xnth")
+skeleton = NodePath("../../Ground")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Hills/MeshInstance3D28"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Hills/MeshInstance3D28/StaticBody3D"]
+shape = SubResource("CylinderShape3D_uprei")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(0.883537, 0, 0, 0, 0.883537, 0, 0, 0, 0.883537, 0.10427, 0.966795, 0.0205817)
+script = ExtResource("4_7e5wn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+visible = false
+shape = SubResource("CapsuleShape3D_60wof")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CharacterBody3D"]
+transform = Transform3D(0.468807, 0, 0, 0, 0.468807, 0, 0, 0, 0.468807, 0, 0, 0)
+layers = 2
+material_override = SubResource("StandardMaterial3D_0nqgx")
+transparency = 0.5
+mesh = SubResource("CapsuleMesh_r7blq")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D/MeshInstance3D2"]
+transform = Transform3D(0.313035, 0, 0, 0, 0.585918, 0, 0, 0, 0.540437, 0, 0, -0.491888)
+layers = 2
+material_override = SubResource("StandardMaterial3D_0nqgx")
+transparency = 0.5
+mesh = SubResource("BoxMesh_16ya1")
+
+[node name="CameraPivot" type="Node3D" parent="CharacterBody3D" node_paths=PackedStringArray("target")]
+top_level = true
+script = ExtResource("5_01sxo")
+sensitivity = 0.001
+target = NodePath("..")
+
+[node name="CameraPitch" type="Node3D" parent="CharacterBody3D/CameraPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/CameraPivot/CameraPitch"]
+transform = Transform3D(1, 7.05194e-05, -3.25028e-05, -5.97662e-05, 0.966249, 0.257611, 4.95724e-05, -0.257611, 0.966249, 0.0309873, 2.64125, 8.33623)
+cull_mask = 1048574
+fov = 41.2
+size = 0.5
+near = 0.413
+
+[node name="Scanner" type="MeshInstance3D" parent="CharacterBody3D"]
+process_mode = 4
+rotation_order = 1
+mesh = SubResource("ImmediateMesh_mspf4")
+script = ExtResource("6_wm6oe")
+vertResolution = 10
+
+[node name="Node2D" type="Node2D" parent="CharacterBody3D/Scanner"]
+script = ExtResource("7_0487h")
+
+[node name="CameraScanner" type="GPUParticles3D" parent="CharacterBody3D" node_paths=PackedStringArray("cylinderCamera", "viewport")]
+layers = 2
+sorting_offset = 100000.0
+sorting_use_aabb_center = false
+extra_cull_margin = 16384.0
+ignore_occlusion_culling = true
+emitting = false
+amount = 100
+lifetime = 600.0
+one_shot = true
+explosiveness = 1.0
+interpolate = false
+fract_delta = false
+visibility_aabb = AABB(-2000, -2000, -2000, 4000, 4000, 4000)
+local_coords = true
+draw_order = 3
+process_material = SubResource("ShaderMaterial_oxq3v")
+draw_pass_1 = SubResource("PointMesh_6pvub")
+script = ExtResource("10_n38s6")
+cameraCount = 1
+cylinderCamera = NodePath("SubViewport/Camera360")
+viewport = NodePath("SubViewport")
+
+[node name="Node2D" type="Node2D" parent="CharacterBody3D/CameraScanner" node_paths=PackedStringArray("camera")]
+process_mode = 4
+process_priority = 2
+visible = false
+script = ExtResource("11_w6n58")
+camera = NodePath("../../CameraPivot/CameraPitch/Camera3D")
+
+[node name="SubViewport" type="SubViewport" parent="CharacterBody3D/CameraScanner"]
+size = Vector2i(10000, 512)
+
+[node name="Camera360" type="Camera3D" parent="CharacterBody3D/CameraScanner/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10427, 0.966795, 0.0205817)
+script = ExtResource("12_42iud")
+fovx = 360.0
+lens = 4
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.647881, 0.761742, 0, -0.761742, -0.647881, 0, 2.33381, 0)
+light_color = Color(0, 0, 0, 1)
+light_energy = 0.0
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="DirectionalLight3D"]
+environment = SubResource("Environment_qy05w")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Hoz:
+Vert:
+FPS: "
+label_settings = SubResource("LabelSettings_siuir")
+script = ExtResource("12_3chtk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 5.49098, -12.039)
+visible = false
+material_override = SubResource("StandardMaterial3D_b1gwv")
+mesh = SubResource("PlaneMesh_vqwil")

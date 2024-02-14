@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bnmqt7c20ps3p"
+path="res://.godot/imported/HP_Crab.OBJ-f5116bb647c703e2e3d284e637a1ac87.mesh"
+
+[deps]
+
+files=["res://.godot/imported/HP_Crab.OBJ-f5116bb647c703e2e3d284e637a1ac87.mesh"]
+
+source_file="res://HP_Crab.OBJ"
+dest_files=["res://.godot/imported/HP_Crab.OBJ-f5116bb647c703e2e3d284e637a1ac87.mesh", "res://.godot/imported/HP_Crab.OBJ-f5116bb647c703e2e3d284e637a1ac87.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,63 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://dql8aubi2ycjs"]
+
+[sub_resource type="VisualShaderNodeLinearSceneDepth" id="VisualShaderNodeLinearSceneDepth_kixnb"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_qhwfl"]
+input_name = "projection_matrix"
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_ldaws"]
+default_input_values = [0, 0.0, 1, 0.0, 2, 0.0, 3, 0.0]
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_0foot"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx, unshaded, world_vertex_coords, shadows_disabled, fog_disabled;
+
+uniform sampler2D depth_tex_frg_2 : hint_depth_texture;
+
+
+
+void fragment() {
+// Input:3
+	mat4 n_out3p0 = PROJECTION_MATRIX;
+
+
+	float n_out2p0;
+// LinearSceneDepth:2
+	{
+		float __log_depth = textureLod(depth_tex_frg_2, SCREEN_UV, 0.0).x;
+	vec4 __depth_view = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, __log_depth, 1.0);
+		__depth_view.xyz /= __depth_view.w;
+		n_out2p0 = -__depth_view.z;
+	}
+
+
+// VectorCompose:5
+	vec3 n_out5p0 = vec3(n_out2p0, n_out2p0, n_out2p0);
+
+
+// TransformVectorMult:6
+	vec3 n_out6p0 = (n_out3p0 * vec4(n_out5p0, 1.0)).xyz;
+
+
+// Output:0
+	ALBEDO = n_out6p0;
+
+
+}
+"
+flags/unshaded = true
+flags/world_vertex_coords = true
+flags/shadows_disabled = true
+flags/fog_disabled = true
+nodes/fragment/0/position = Vector2(980, -60)
+nodes/fragment/2/node = SubResource("VisualShaderNodeLinearSceneDepth_kixnb")
+nodes/fragment/2/position = Vector2(0, 0)
+nodes/fragment/3/node = SubResource("VisualShaderNodeInput_qhwfl")
+nodes/fragment/3/position = Vector2(160, 200)
+nodes/fragment/5/node = SubResource("VisualShaderNodeVectorCompose_ldaws")
+nodes/fragment/5/position = Vector2(360, 0)
+nodes/fragment/6/node = SubResource("VisualShaderNodeTransformVecMult_0foot")
+nodes/fragment/6/position = Vector2(660, 60)
+nodes/fragment/connections = PackedInt32Array(2, 0, 5, 0, 3, 0, 6, 0, 5, 0, 6, 1, 6, 0, 0, 0, 2, 0, 5, 1, 2, 0, 5, 2)
